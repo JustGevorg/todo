@@ -36,7 +36,7 @@ def exception_handler_factory(status_code: int) -> ExceptionHandler:
     async def exception_handler(_: Request, exc: BaseTodoException):
         return JSONResponse(
             status_code=status_code,
-            content={"detail": exc.description}
+            content={"description": exc.description}
         )
 
     return exception_handler
