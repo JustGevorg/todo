@@ -2,7 +2,7 @@ from typing import Annotated
 
 from fastapi import APIRouter, Path, Depends
 
-from api.responses import create_new_task_responses
+from api.responses import create_new_task_responses, update_task_responses, delete_task_responses, get_task_responses
 from schemas.tasks import CreateTaskSchema, UpdateTaskSchema
 from services import UseCases
 from utils import pagination_dep, Stub
@@ -21,7 +21,8 @@ def create_new_task(use_cases: Annotated[UseCases, Depends(Stub(UseCases))],
 
 @tasks_api_router.delete("/{task_name}",
                          description="Delete a task",
-                         summary="Delete a task")
+                         summary="Delete a task",
+                         responses=delete_task_responses)
 def delete_task(use_cases: Annotated[UseCases, Depends(Stub(UseCases))],
                 task_name: str = Path(description="Task name")):
     use_cases.delete_task(task_name)
@@ -29,7 +30,8 @@ def delete_task(use_cases: Annotated[UseCases, Depends(Stub(UseCases))],
 
 @tasks_api_router.put("/{task_name}",
                       description="Update a task",
-                      summary="Update a task")
+                      summary="Update a task",
+                      responses=update_task_responses)
 def update_task(use_cases: Annotated[UseCases, Depends(Stub(UseCases))],
                 updated_task: UpdateTaskSchema, task_name: str = Path(description="Task name")):
     use_cases.update_task(task_name, updated_task)
@@ -37,7 +39,8 @@ def update_task(use_cases: Annotated[UseCases, Depends(Stub(UseCases))],
 
 @tasks_api_router.get("",
                       description="Get all tasks",
-                      summary="Get all tasks")
+                      summary="Get all tasks",
+                      responses=get_task_responses)
 async def get_tasks(use_cases: Annotated[UseCases, Depends(Stub(UseCases))],
                     pagination: pagination_dep):
     tasks = use_cases.get_tasks(pagination)
