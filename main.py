@@ -9,10 +9,6 @@ from services import UseCases
 app = FastAPI(title="TODO list api", description="API управления заметками")
 def setup_dependedencies(app: FastAPI) -> FastAPI:
 
-    task_repo = lambda: TasksRepository(session=SyncSession())
-    app.dependency_overrides.update({
-        TasksRepository: task_repo,
-    })
     use_cases = UseCases([TasksRepository], SyncSession)
     app.dependency_overrides.update({
         UseCases: lambda: use_cases,
