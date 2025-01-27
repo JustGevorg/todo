@@ -23,7 +23,7 @@ delete_task_responses = {
     404: {"description": ApiResponsesDescriptions.tasks_not_found,
           "content": {
               "application/json": {
-                  "example": {"description": ExceptionsDescriptionsTemplates.deleted_task_not_exists.format(
+                  "example": {"description": ExceptionsDescriptionsTemplates.updated_task_not_exists.format(
                       task_name="Сходить в магазин")}
               }
           }},
@@ -57,7 +57,7 @@ get_task_responses = {
                   "example": {"description": ExceptionsDescriptionsTemplates.tasks_not_found}
               }
           }},
-    200: {"description": ApiResponsesDescriptions.task_created_successfully,
+    200: {"description": ApiResponsesDescriptions.requested_tasks,
           "content": {
               "application/json": {
                   "example": example_tasks

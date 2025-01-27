@@ -10,6 +10,7 @@ class ExceptionsDescriptionsTemplates(StrEnum):
 
 class ApiResponsesDescriptions(StrEnum):
     task_with_name_already_exists = "Задача с таким названием  уже существует"
+    requested_tasks = "Задачи по запросу"
     task_created_successfully = "Задача успешно создана"
     task_deleted_successfully = "Задача успешно удалена"
     task_updated_successfully = "Задача успешно обновлена"

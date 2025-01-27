@@ -9,33 +9,32 @@ from utils import pagination_dep, Stub
 
 tasks_api_router = APIRouter(prefix="/tasks", tags=["tasks"])
 
+
 # TODO: добавить примеры ответов для каждого эндпоинта
 @tasks_api_router.post("",
                        description="Create a new task",
                        summary="Create a new task",
                        responses=create_new_task_responses)
 async def create_new_task(use_cases: Annotated[UseCases, Depends(Stub(UseCases))],
-                    new_task: CreateTaskSchema):
+                          new_task: CreateTaskSchema):
     await use_cases.create_task(new_task)
 
 
 @tasks_api_router.delete("/{task_name}",
                          description="Delete a task",
-                         summary="Delete a task")
-async def delete_task(use_cases: Annotated[UseCases, Depends(Stub(UseCases))],
                          summary="Delete a task",
                          responses=delete_task_responses)
-def delete_task(use_cases: Annotated[UseCases, Depends(Stub(UseCases))],
-                task_name: str = Path(description="Task name")):
-    await use_cases.delete_task(task_name)
+async def delete_task(use_cases: Annotated[UseCases, Depends(Stub(UseCases))],
+                      task_name: str = Path(description="Task name")):
+        await use_cases.delete_task(task_name)
 
 
 @tasks_api_router.put("/{task_name}",
                       description="Update a task",
                       summary="Update a task",
                       responses=update_task_responses)
-def update_task(use_cases: Annotated[UseCases, Depends(Stub(UseCases))],
-                updated_task: UpdateTaskSchema, task_name: str = Path(description="Task name")):
+async def update_task(use_cases: Annotated[UseCases, Depends(Stub(UseCases))],
+                      updated_task: UpdateTaskSchema, task_name: str = Path(description="Task name")):
     await use_cases.update_task(task_name, updated_task)
 
 
