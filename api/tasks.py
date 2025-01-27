@@ -1,10 +1,11 @@
+import asyncio
 from typing import Annotated
 
 from fastapi import APIRouter, Path, Depends
 
 from api.responses import create_new_task_responses
 from schemas.tasks import CreateTaskSchema, UpdateTaskSchema
-from services import UseCases
+from use_cases import UseCases
 from utils import pagination_dep, Stub
 
 tasks_api_router = APIRouter(prefix="/tasks", tags=["tasks"])
@@ -14,25 +15,25 @@ tasks_api_router = APIRouter(prefix="/tasks", tags=["tasks"])
                        description="Create a new task",
                        summary="Create a new task",
                        responses=create_new_task_responses)
-def create_new_task(use_cases: Annotated[UseCases, Depends(Stub(UseCases))],
+async def create_new_task(use_cases: Annotated[UseCases, Depends(Stub(UseCases))],
                     new_task: CreateTaskSchema):
-    use_cases.create_task(new_task)
+    await use_cases.create_task(new_task)
 
 
 @tasks_api_router.delete("/{task_name}",
                          description="Delete a task",
                          summary="Delete a task")
-def delete_task(use_cases: Annotated[UseCases, Depends(Stub(UseCases))],
+async def delete_task(use_cases: Annotated[UseCases, Depends(Stub(UseCases))],
                 task_name: str = Path(description="Task name")):
-    use_cases.delete_task(task_name)
+    await use_cases.delete_task(task_name)
 
 
 @tasks_api_router.put("/{task_name}",
                       description="Update a task",
                       summary="Update a task")
-def update_task(use_cases: Annotated[UseCases, Depends(Stub(UseCases))],
+async def update_task(use_cases: Annotated[UseCases, Depends(Stub(UseCases))],
                 updated_task: UpdateTaskSchema, task_name: str = Path(description="Task name")):
-    use_cases.update_task(task_name, updated_task)
+    await use_cases.update_task(task_name, updated_task)
 
 
 @tasks_api_router.get("",
@@ -40,5 +41,5 @@ def update_task(use_cases: Annotated[UseCases, Depends(Stub(UseCases))],
                       summary="Get all tasks")
 async def get_tasks(use_cases: Annotated[UseCases, Depends(Stub(UseCases))],
                     pagination: pagination_dep):
-    tasks = use_cases.get_tasks(pagination)
+    tasks = await use_cases.get_tasks(pagination)
     return tasks
